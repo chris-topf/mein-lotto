@@ -2,25 +2,57 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Lotto Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurojackpot Dashboard</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        h1, h2, h3 { color: #1e3c72; }
-        .kugel { display: inline-flex; width: 30px; height: 30px; background: #f1c40f; border-radius: 50%; align-items: center; justify-content: center; font-weight: bold; margin-right: 5px; }
-        .kugel.ez { background: #3498db; color: white; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f0f4f8; color: #1a202c; margin: 0; padding: 20px; display: block; }
+        .dashboard { max-width: 650px; margin: 0 auto; }
+        .header { background: linear-gradient(135deg, #0f172a, #1e293b); color: #ffffff; padding: 25px 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header h1 { margin: 0 0 8px 0; font-size: 22px; letter-spacing: 0.5px; }
+        .header .meta { font-size: 13px; color: #94a3b8; }
+        .card { background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card h2 { font-size: 15px; color: #334155; margin-top: 0; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; border-left: 4px solid #3b82f6; padding-left: 8px; }
+        .balls-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+        .ball { width: 42px; height: 42px; border-radius: 50%; display: table-cell; vertical-align: middle; text-align: center; line-height: 42px; font-weight: bold; font-size: 15px; box-shadow: inset -3px -3px 8px rgba(0,0,0,0.15), 2px 2px 5px rgba(0,0,0,0.05); }
+        .ball.main { background: radial-gradient(circle at 30% 30%, #ffd700, #caa000); color: #1e293b; border: 1px solid #b38f00; }
+        .ball.euro { background: radial-gradient(circle at 30% 30%, #ff9900, #d66000); color: #ffffff; border: 1px solid #b35000; }
+        .tipp-row { display: table; width: 100%; padding: 12px 8px; border-bottom: 1px solid #f1f5f9; }
+        .tipp-row:last-child { border-bottom: none; }
+        .tipp-cell { display: table-cell; vertical-align: middle; }
+        .tipp-title { font-weight: 600; font-size: 14px; color: #64748b; width: 75px; }
+        .tipp-numbers { text-align: center; }
+        .t-ball { width: 32px; height: 32px; border-radius: 50%; display: inline-block; text-align: center; line-height: 32px; font-size: 13px; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; margin: 0 3px; }
+        .t-ball.hit-main { background: #fef08a; border-color: #eab308; color: #713f12; font-weight: bold; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.05); }
+        .t-ball.hit-euro { background: #fed7aa; border-color: #f97316; color: #7c2d12; font-weight: bold; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.05); }
+        .t-ball.euro-zone { border-style: dashed; }
+        .badge-cell { width: 70px; text-align: right; }
+        .result-badge { display: inline-block; background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; text-align: center; min-width: 55px; }
+        .result-badge.has-hits { background: #dbeafe; color: #1e40af; }
+        .result-badge.jackpot { background: #dcfce7; color: #166534; }
+        .status-bar { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <h1>Lotto Dashboard</h1>
-    
-    <div class="card">
-        <h2>Aktuelle Ziehung vom 27.06.2026 (Samstag)</h2>
-        <p><strong>Zahlen:</strong></p>
-        <div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div>
-        <span style="font-weight:bold; font-size:1.2rem; margin: 0 10px;">+</span>
-        
+<div class="dashboard">
+    <div class="header">
+        <h1>Eurojackpot Auswertung</h1>
+        <div class="meta">Ziehung vom Freitag, 26.06.2026</div>
     </div>
-
     <div class="card">
-        <h3>Deine Tipp-Auswertung</h3><p>Reihe 1: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 2: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 3: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 4: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p></div></body></html>
+        <h2>Gewinnzahlen der Ziehung</h2>
+        <div class="balls-container"><div class="ball main">17</div><div class="ball main">25</div><div class="ball main">35</div><div class="ball main">39</div><div class="ball main">41</div></div>
+        <div class="balls-container" style="margin-top: 12px;"><div class="ball euro">5</div><div class="ball euro">9</div></div>
+    </div>
+    <div class="card">
+        <h2>Deine Tippreihen</h2>
+        <div id="tipps-container">
+            <div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 1</div><div class="tipp-cell tipp-numbers"><span class="t-ball">1</span><span class="t-ball">2</span><span class="t-ball">3</span><span class="t-ball">4</span><span class="t-ball">5</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">1</span><span class="t-ball euro-zone">2</span></div><div class="tipp-cell badge-cell"><span class="result-badge">0 + 0</span></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 2</div><div class="tipp-cell tipp-numbers"><span class="t-ball">1</span><span class="t-ball">2</span><span class="t-ball">3</span><span class="t-ball">4</span><span class="t-ball">5</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">1</span><span class="t-ball euro-zone">2</span></div><div class="tipp-cell badge-cell"><span class="result-badge">0 + 0</span></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 3</div><div class="tipp-cell tipp-numbers"><span class="t-ball">1</span><span class="t-ball">2</span><span class="t-ball">3</span><span class="t-ball">4</span><span class="t-ball">5</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">1</span><span class="t-ball euro-zone">2</span></div><div class="tipp-cell badge-cell"><span class="result-badge">0 + 0</span></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 4</div><div class="tipp-cell tipp-numbers"><span class="t-ball">1</span><span class="t-ball">2</span><span class="t-ball">3</span><span class="t-ball">4</span><span class="t-ball">5</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">1</span><span class="t-ball euro-zone">2</span></div><div class="tipp-cell badge-cell"><span class="result-badge">0 + 0</span></div></div>
+        </div>
+    </div>
+    <div class="status-bar">
+        Rein statisches HTML-Dashboard &bull; Generiert via Python-Backend
+    </div>
+</div>
+</body>
+</html>
