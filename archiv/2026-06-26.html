@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #ffffff; color: #1a202c; margin: 0; padding: 10px; }
+        .header { background: linear-gradient(135deg, #0f172a, #1e293b); color: #ffffff; padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header h1 { margin: 0 0 5px 0; font-size: 22px; }
+        .header .meta { font-size: 13px; color: #94a3b8; }
+        .card { background: #ffffff; border-radius: 16px; padding: 5px; margin-bottom: 20px; }
+        .card h2 { font-size: 14px; color: #475569; margin-top: 20px; margin-bottom: 12px; text-transform: uppercase; border-left: 4px solid #3b82f6; padding-left: 8px; }
+        .balls-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
+        .ball { width: 38px; height: 38px; border-radius: 50%; text-align: center; line-height: 38px; font-weight: bold; font-size: 14px; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.15); }
+        .ball.main { background: radial-gradient(circle at 30% 30%, #ffd700, #caa000); color: #1e293b; }
+        .ball.euro { background: radial-gradient(circle at 30% 30%, #ff9900, #d66000); color: #ffffff; }
+        .digit { width: 30px; height: 34px; color: #fff; text-align: center; line-height: 34px; font-weight: bold; font-size: 16px; border-radius: 4px; margin-right: 4px; display: inline-block; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3); }
+        .digit.s77 { background: #0284c7; }
+        .digit.s6 { background: #0d9488; }
+        .gs-win-row { display: flex; font-size: 13px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
+        .gs-win-row:last-child { border-bottom: none; }
+        .gs-win-label { width: 140px; color: #64748b; font-weight: 500; }
+        .gs-win-value { font-family: monospace; font-weight: bold; color: #1e293b; font-size: 14px; }
+        .gs-win-prize { margin-left: auto; font-weight: 600; color: #7c3aed; }
+        .tipp-row { display: table; width: 100%; padding: 12px 4px; border-bottom: 1px solid #f1f5f9; }
+        .tipp-row:last-child { border-bottom: none; }
+        .tipp-cell { display: table-cell; vertical-align: middle; }
+        .tipp-title { font-weight: 700; font-size: 14px; color: #64748b; width: 80px; }
+        .tipp-title-z { font-weight: 700; font-size: 14px; color: #475569; width: 80px; }
+        .tipp-block { display: flex; flex-direction: column; gap: 8px; }
+        .tipp-sub-row { display: flex; align-items: center; gap: 2px; width: 100%; }
+        .t-ball, .t-digit { width: 30px; height: 30px; border-radius: 50%; display: inline-block; text-align: center; line-height: 30px; font-size: 13px; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; margin: 0 2px; }
+        .t-ball.euro-zone { border-style: dashed; }
+        .t-ball.hit-main { background: #fef08a; border-color: #eab308; color: #713f12; font-weight: bold; }
+        .t-ball.hit-euro { background: #fed7aa; border-color: #f97316; color: #7c2d12; font-weight: bold; }
+        .t-digit { border-radius: 4px; font-family: monospace; font-size: 14px; }
+        .t-digit.sub { width: 22px; height: 22px; line-height: 22px; font-size: 11px; margin: 0 1px; }
+        .t-digit.hit-s77 { background: #bae6fd; border-color: #0284c7; color: #0369a1; font-weight: bold; }
+        .t-digit.hit-s6 { background: #ccfbf1; border-color: #0d9488; color: #0f766e; font-weight: bold; }
+        .t-digit.hit-gs { background: #f3e8ff; border-color: #9333ea; color: #6b21a8; font-weight: bold; }
+        .gs-klasse-row { display: flex; align-items: center; padding: 4px 6px; margin: 2px 0; border-radius: 4px; font-size: 12px; background: #f1f5f9; }
+        .gs-klasse-row.win { background: #f3e8ff; border-left: 4px solid #9333ea; }
+        .gs-k-title { width: 70px; color: #475569; font-weight: 500; }
+        .gs-k-digits { display: flex; margin-right: 15px; }
+        .gs-k-target { color: #64748b; font-family: monospace; }
+        .result-badge { margin-left: auto; display: inline-block; background: #f1f5f9; color: #475569; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; min-width: 140px; text-align: center; }
+        .result-badge.has-hits { background: #dbeafe; color: #1e40af; }
+        .result-badge.jackpot { background: #dcfce7; color: #166534; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lotto Auswertung</h1>
+        <div class="meta">Eurojackpot vom 2026-06-26 | Zusatzlotterien vom 2026-06-26</div>
+    </div>
+    <div class="card">
+        <h2>Eurojackpot Gewinnzahlen</h2>
+        <div class="balls-container"><div class="ball main">17</div><div class="ball main">25</div><div class="ball main">35</div><div class="ball main">39</div><div class="ball main">41</div> &nbsp; <div class="ball euro">5</div><div class="ball euro">9</div></div>
+        <h2>Spiel 77 &amp; Super 6</h2>
+        <div class="balls-container">
+            <div class="digit s77">9</div><div class="digit s77">3</div><div class="digit s77">8</div><div class="digit s77">6</div><div class="digit s77">3</div><div class="digit s77">3</div><div class="digit s77">8</div><span style="font-size:12px; color:#64748b; margin-left:4px; padding-top:10px;"> (Klasse 1: Jackpot)</span> 
+            &nbsp;&nbsp;&nbsp;&nbsp; 
+            <div class="digit s6">6</div><div class="digit s6">3</div><div class="digit s6">5</div><div class="digit s6">0</div><div class="digit s6">4</div><div class="digit s6">5</div><span style="font-size:12px; color:#64748b; margin-left:4px; padding-top:10px;"> (Klasse 1: 100.000 €)</span>
+        </div>
+        <h2>Glücksspirale Gewinnzahlen</h2><div style='background:#fafafa; border-radius:8px; padding:12px; border:1px solid #e2e8f0;'>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 1 (1stellig):</span>
+                    <span class="gs-win-value">7</span>
+                    <span class="gs-win-prize">10 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 2 (2stellig):</span>
+                    <span class="gs-win-value">26</span>
+                    <span class="gs-win-prize">25 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 3 (3stellig):</span>
+                    <span class="gs-win-value">360</span>
+                    <span class="gs-win-prize">100 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 4 (4stellig):</span>
+                    <span class="gs-win-value">4251</span>
+                    <span class="gs-win-prize">1.000 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 5 (5stellig):</span>
+                    <span class="gs-win-value">05469</span>
+                    <span class="gs-win-prize">10.000 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 6 (6stellig):</span>
+                    <span class="gs-win-value">234279 oder 328776</span>
+                    <span class="gs-win-prize">100.000 €</span>
+                </div>
+                <div class="gs-win-row">
+                    <span class="gs-win-label">Klasse 7 (7stellig):</span>
+                    <span class="gs-win-value">7929014</span>
+                    <span class="gs-win-prize">10.000 € mtl.</span>
+                </div></div>
+    </div>
+    <div class="card">
+        <h2>Deine Tipps &amp; Auswertung</h2>
+        <div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 1</div><div class="tipp-cell tipp-block"><div class="tipp-sub-row"><span class="t-ball">9</span><span class="t-ball hit-main">25</span><span class="t-ball">32</span><span class="t-ball">48</span><span class="t-ball">49</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">10</span><span class="t-ball euro-zone">12</span><span class="result-badge has-hits">1 + 0</span></div></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 2</div><div class="tipp-cell tipp-block"><div class="tipp-sub-row"><span class="t-ball">6</span><span class="t-ball">12</span><span class="t-ball">16</span><span class="t-ball">27</span><span class="t-ball">49</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">3</span><span class="t-ball euro-zone">6</span><span class="result-badge ">0 + 0</span></div></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 3</div><div class="tipp-cell tipp-block"><div class="tipp-sub-row"><span class="t-ball">7</span><span class="t-ball">11</span><span class="t-ball">28</span><span class="t-ball">29</span><span class="t-ball">37</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">4</span><span class="t-ball euro-zone">10</span><span class="result-badge ">0 + 0</span></div></div></div><div class="tipp-row"><div class="tipp-cell tipp-title">Reihe 4</div><div class="tipp-cell tipp-block"><div class="tipp-sub-row"><span class="t-ball">4</span><span class="t-ball">7</span><span class="t-ball">11</span><span class="t-ball">20</span><span class="t-ball hit-main">25</span><span style="margin: 0 4px;"></span><span class="t-ball euro-zone">4</span><span class="t-ball euro-zone">10</span><span class="result-badge has-hits">1 + 0</span></div></div></div>
+        <div style="margin: 15px 0; border-top: 2px dashed #e2e8f0;"></div>
+        <div class="tipp-row"><div class="tipp-cell tipp-title-z">Spiel 77</div><div class="tipp-cell tipp-sub-row"><span class="t-digit ">2</span><span class="t-digit ">1</span><span class="t-digit ">2</span><span class="t-digit ">7</span><span class="t-digit ">2</span><span class="t-digit hit-s77">3</span><span class="t-digit hit-s77">8</span><span class="result-badge has-hits">2 Endz. / 17 €</span></div></div><div class="tipp-row"><div class="tipp-cell tipp-title-z">Super 6</div><div class="tipp-cell tipp-sub-row"><span class="t-digit ">1</span><span class="t-digit ">2</span><span class="t-digit ">7</span><span class="t-digit ">2</span><span class="t-digit ">3</span><span class="t-digit ">8</span><span class="result-badge ">0 Endz.</span></div></div>
+            <div class="tipp-row" style="background: #fafafa; border-radius: 8px; padding: 10px; margin-top: 5px;">
+                <div class="tipp-cell" style="vertical-align: top; font-weight: bold; color: #475569; width: 80px;">GlücksSp.</div>
+                <div class="tipp-cell" style="width: 100%;">
+                    <div style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #6b21a8;">Losnummer: 2127238</div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 1:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 7</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 2:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 26</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 3:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">2</span><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 360</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 4:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">7</span><span class="t-digit sub ">2</span><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 4251</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 5:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">2</span><span class="t-digit sub ">7</span><span class="t-digit sub ">2</span><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 05469</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 6:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">1</span><span class="t-digit sub ">2</span><span class="t-digit sub ">7</span><span class="t-digit sub ">2</span><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 234279</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div>
+                    <div class="gs-klasse-row">
+                        <span class="gs-k-title">Klasse 7:</span>
+                        <div class="gs-k-digits"><span class="t-digit sub ">2</span><span class="t-digit sub ">1</span><span class="t-digit sub ">2</span><span class="t-digit sub ">7</span><span class="t-digit sub ">2</span><span class="t-digit sub ">3</span><span class="t-digit sub ">8</span></div>
+                        <span class="gs-k-target">Ziel: 7929014</span>
+                        <span class="result-badge">0 Treffer</span>
+                    </div></div></div>
+    </div>
+</body>
+</html>
