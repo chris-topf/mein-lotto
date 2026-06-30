@@ -2,34 +2,25 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Dashboard - Test</title>
+    <title>Lotto Dashboard</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f4f6f9;
-            color: #2c3e50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        h1 { color: #1e3c72; margin: 0 0 10px 0; }
-        p { color: #7f8c8d; margin: 0; font-size: 1.1rem; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2c3e50; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h1, h2, h3 { color: #1e3c72; }
+        .kugel { display: inline-flex; width: 30px; height: 30px; background: #f1c40f; border-radius: 50%; align-items: center; justify-content: center; font-weight: bold; margin-right: 5px; }
+        .kugel.ez { background: #3498db; color: white; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>Hello World!</h1>
-        <p>Die Verbindung vom Pi 2 zu Cloudflare steht. 🚀</p>
+    <h1>Lotto Dashboard</h1>
+    
+    <div class="card">
+        <h2>Aktuelle Ziehung vom 27.06.2026 (Samstag)</h2>
+        <p><strong>Zahlen:</strong></p>
+        <div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div><div class="kugel">{z}</div>
+        <span style="font-weight:bold; font-size:1.2rem; margin: 0 10px;">+</span>
+        
     </div>
-</body>
-</html>
+
+    <div class="card">
+        <h3>Deine Tipp-Auswertung</h3><p>Reihe 1: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 2: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 3: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p><p>Reihe 4: <strong>0</strong> Hauptzahlen + <strong>0</strong> Eurozahlen richtig.</p></div></body></html>
